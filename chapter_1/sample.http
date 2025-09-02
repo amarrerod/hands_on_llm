@@ -1,0 +1,7 @@
+POST http://localhost:8000/answer/
+Content-Type: application/json
+
+{
+    "question": "Cuéntame un chiste gracioso en Catalán",
+    "max_tokens": 75
+}
