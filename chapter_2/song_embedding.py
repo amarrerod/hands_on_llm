@@ -19,7 +19,7 @@ import numpy as np
 def get_n_most_similar(model, song_id: int, songs_df: pd.DataFrame, n: int = 20):
     title, artist = songs_df.iloc[song_id]
     print(f"{title} - {artist} most similar songs are:\n")
-    top_most_sim = np.array(model.wv.most_similar(positive=str(song_id), topn=n))[:,0]
+    top_most_sim = np.array(model.wv.most_similar(positive=str(song_id), topn=n))[:, 0]
     return songs_df.iloc[top_most_sim]
 
 

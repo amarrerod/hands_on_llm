@@ -42,4 +42,4 @@ def answer(question: Question):
     print(f"Received the following question: {question}")
     output = _generator(question.question, max_new_tokens=question.max_tokens)
     print(f"Here's the output: {output}")
-    return {"output": output[0]['generated_text']}
+    return {"output": output[0]["generated_text"]}

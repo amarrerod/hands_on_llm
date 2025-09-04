@@ -23,10 +23,10 @@ if __name__ == "__main__":
         "Write an email apologizing to Sarah for the tragic gardening mishap."
         "Explain how it happened. <|assistant|>"
     )
-    input_ids = tokenizer(prompt, return_tensors='pt').input_ids.to("cuda")
+    input_ids = tokenizer(prompt, return_tensors="pt").input_ids.to("cuda")
     output = model.generate(input_ids=input_ids, max_new_tokens=20)
     print(tokenizer.decode(output[0]))
 
     # What are the IDs?
     for id in input_ids[0]:
-        print(f'ID: {id}, Token: {tokenizer.decode(id)}')
+        print(f"ID: {id}, Token: {tokenizer.decode(id)}")
