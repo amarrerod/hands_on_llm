@@ -48,6 +48,6 @@ if __name__ == "__main__":
         hue="cluster",
         alpha=0.6,
         s=2,
-        cmap="tab20b",
+        palette="tab20b",
     )
     plt.show()
