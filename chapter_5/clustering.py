@@ -48,6 +48,7 @@ if __name__ == "__main__":
     else:
         df = pd.read_csv(DF_FILENAME)
 
+    plt.figure(figsize=(12, 8))
     sns.scatterplot(df[df.cluster == -1], x="x0", y="x1", alpha=0.05, s=2, c="grey")
     sns.scatterplot(
         df[df.cluster != -1],
@@ -57,5 +58,6 @@ if __name__ == "__main__":
         alpha=0.6,
         s=2,
         palette="tab20b",
+        legend=False,
     )
     plt.show()
