@@ -17,28 +17,36 @@ from umap import UMAP
 from hdbscan import HDBSCAN
 import matplotlib.pyplot as plt
 import seaborn as sns
+from pathlib import Path
+
+DF_FILENAME = Path(__file__).with_name("arxiv_clustered.csv")
+
 
 if __name__ == "__main__":
-    dataset = load_dataset("maartengr/arxiv_nlp")["train"]
-    abstracts, titles = dataset["Abstracts"], dataset["Titles"]
-    embd_model = SentenceTransformer(
-        "thenlper/gte-small"
-    )  # Qwen/Qwen3-Embedding-4B Works better
-    embds = embd_model.encode(abstracts, show_progress_bar=True)
+    if not DF_FILENAME.is_file():
+        dataset = load_dataset("maartengr/arxiv_nlp")["train"]
+        abstracts, titles = dataset["Abstracts"], dataset["Titles"]
+        embd_model = SentenceTransformer(
+            "thenlper/gte-small"
+        )  # Qwen/Qwen3-Embedding-4B Works better
+        embds = embd_model.encode(abstracts, show_progress_bar=True)
 
-    print(embds.shape)
-    umap_model = UMAP(n_components=2, metric="cosine", random_state=42)
-    reduced_embds = umap_model.fit_transform(embds)
+        print(embds.shape)
+        umap_model = UMAP(n_components=2, metric="cosine", random_state=42)
+        reduced_embds = umap_model.fit_transform(embds)
 
-    hdbscan_model = HDBSCAN(
-        min_cluster_size=50, metric="euclidean", cluster_selection_method="eom"
-    ).fit(reduced_embds)
+        hdbscan_model = HDBSCAN(
+            min_cluster_size=50, metric="euclidean", cluster_selection_method="eom"
+        ).fit(reduced_embds)
 
-    clusters = hdbscan_model.labels_
-    print(f"{len(set(clusters))} clusters created.")
-    df = pd.DataFrame(reduced_embds, columns=["x0", "x1"])
-    df["title"] = titles
-    df["cluster"] = [str(c) for c in clusters]
+        clusters = hdbscan_model.labels_
+        print(f"{len(set(clusters))} clusters created.")
+        df = pd.DataFrame(reduced_embds, columns=["x0", "x1"])
+        df["title"] = titles
+        df["cluster"] = [str(c) for c in clusters]
+        df.to_csv(DF_FILENAME, index=False)
+    else:
+        df = pd.read_csv(DF_FILENAME)
 
     sns.scatterplot(df[df.cluster == -1], x="x0", y="x1", alpha=0.05, s=2, c="grey")
     sns.scatterplot(
