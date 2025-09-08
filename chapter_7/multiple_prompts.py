@@ -13,7 +13,7 @@
 from langchain_community.llms import LlamaCpp
 from langchain_core.prompts import PromptTemplate
 from langchain.schema import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough, RunnableMap
+from langchain_core.runnables import RunnablePassthrough
 
 from pathlib import Path
 
