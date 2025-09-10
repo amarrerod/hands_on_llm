@@ -46,10 +46,12 @@ class Index:
         self._index.add(np.float32(embeddings))
         return self
 
-    def __call__(self, query: Sequence[str], n_results: int) -> Tuple:
+    def __call__(
+        self, query: Sequence[str], n_results: int, return_distances: bool = False
+    ) -> Tuple:
         query_embed = self._embedding_model(query)[0]
         dists, sim_items = self._index.search(np.float32([query_embed]), n_results)
-        return dists, sim_items
+        return (dists, sim_items) if return_distances else sim_items
 
 
 def main() -> None:
@@ -67,7 +69,9 @@ def main() -> None:
     index += embeds
 
     # 3. Query the index
-    dists, sim_items = index(query=["how precise was the science"], n_results=3)
+    dists, sim_items = index(
+        query=["how precise was the science"], n_results=3, return_distances=True
+    )
 
     df = pd.DataFrame(
         data={"sentences": np.array(sentences)[sim_items[0]], "distance": dists[0]}
