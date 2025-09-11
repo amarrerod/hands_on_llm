@@ -42,7 +42,7 @@ def main() -> None:
     Relevant information:
     {context}
     
-    Present a concise answer the following question using the relevant information
+    Present a concise answer to the following question using the relevant information
     provided above:
     {input}<|end|>
     <|assistant|>""",
